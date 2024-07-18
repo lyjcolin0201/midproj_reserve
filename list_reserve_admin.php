@@ -125,7 +125,7 @@ if ($totalRows) {
   <div class="container">
   <div class="row mt-5">
     <div class="mt-2">
-      <form action="list-admin.php" method="get">
+      <form action="list_reserve_admin.php" method="get">
         <label for="reserve_id" style="color:#ffffff;">預約編號:</label>
         <input class="text-dark" type="text" name="reserve_id" id="reserve_id" placeholder="請輸入編號" class="me-2" value="<?= htmlspecialchars($reserve_id) ?>">
         <label for="customer_name" style="color:#ffffff;">姓名:</label>
@@ -171,7 +171,7 @@ if ($totalRows) {
               <td><a href="javascript: deleteOne(<?= $r['reserve_id'] ?>)">
                   <i class="fa-solid fa-trash"></i>
                 </a></td>
-                <td><a href="edit.php?reserve_id=<?= $r['reserve_id'] ?>">
+                <td><a href="edit_reserve.php?reserve_id=<?= $r['reserve_id'] ?>">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </a></td>
             </tr>
@@ -187,7 +187,7 @@ if ($totalRows) {
   const data = <?= json_encode($rows)  ?>;
   const deleteOne = (reserve_id) => {
     if (confirm(`是否要刪除編號為 ${reserve_id} 的資料??`)) {
-      location.href = `del.php?reserve_id=${reserve_id}`;
+      location.href = `del_reserve.php?reserve_id=${reserve_id}`;
     }
   };
   //searh

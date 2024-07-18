@@ -1,21 +1,11 @@
 <?php
 require __DIR__ . '/parts/admin-required.php';
+
+$title = "新增訂位";
+$pageName = "r_add";
+
 require __DIR__ . '/db-connect.php';
 
-$reserve_id = isset($_GET['reserve_id']) ? intval($_GET['reserve_id']) : 0;
-if (empty($reserve_id)) {
-  header('Location: index_.php'); exit;
-}
-$sql = "SELECT * FROM reservations WHERE reserve_id=$reserve_id";
-
-
-$r = $pdo->query($sql)->fetch();
-if (empty($r)) {
-  header('Location: index_.php'); exit;
-}
-
-# header('Content-Type: application/json'); # 告訴瀏覽器內容為 JSON
-# echo json_encode($r);
 ?>
 <?php include __DIR__ . "/parts/html-head.php"; ?>
 <style>
@@ -33,40 +23,34 @@ if (empty($r)) {
       <div class="card">
 
         <div class="card-body">
-          <h5 class="card-title">編輯訂位資訊</h5>
+          <h5 class="card-title text-dark">新增訂位</h5>
 
           <form name="form1" onsubmit="sendData(event)" novalidate>
-            <input type="hidden" name="reserve_id" value="<?= $r['reserve_id'] ?>">
             <div class="mb-3">
-              <label for="customer_name" class="form-label text-dark">姓名</label>
-              <input type="text" class="form-control" name="customer_name" 
-              value="<?= htmlentities($r['customer_name']) ?>" id="customer_name" required>
-              <div class="form-text"></div>
-            </div>
-
-            <div class="mb-3">
-              <label for="contact_number" class="form-label text-dark">手機</label>
-              <input type="text" class="form-control" name="contact_number"
-              value="<?= $r['contact_number'] ?>" id="contact_number">
+              <label for="name" class="form-label text-dark text-dark">姓名</label>
+              <input type="text" class="form-control" name="customer_name" id="name" required>
               <div class="form-text"></div>
             </div>
             <div class="mb-3">
-              <label for="store" class="form-label text-dark">分店</label>
-              <input type="text" class="form-control" name="store"
-              value="<?= $r['store'] ?>" id="store">
+              <label for="mobile" class="form-label text-dark text-dark">手機</label>
+              <input type="text" class="form-control" name="contact_number" id="mobile">
+              <div class="form-text"></div>
             </div>
             <div class="mb-3">
-              <label for="date" class="form-label text-dark">預約日期</label>
-              <input type="date" class="form-control" name="date"
-              value="<?= $r['date'] ?>" id="date">
+              <label for="store" class="form-label text-dark text-dark">分店</label>
+              <input type="text" class="form-control" name="store" id="store" required>
+              <div class="form-text"></div>
             </div>
             <div class="mb-3">
-              <label for="time" class="form-label text-dark">用餐時間</label>
+              <label for="date" class="form-label text-dark text-dark">日期</label>
+              <input type="date" class="form-control" name="date" id="date">
+            </div>
+            <div class="mb-3">
+              <label for="reservation_time" class="form-label text-dark text-dark">用餐時間</label>
               <input type="time" class="form-control" name="time"
-              value="<?= $r['time'] ?>" id="time">
-
-              <div class="mb-3">
-              <label for="count" class="text-dark">用餐人數：</label>
+              id="reservation_time">
+            </div>
+            <label for="count" class="text-dark">用餐人數：</label>
     <select class="text-dark" id="count" name="count" required>
         <option value="1">1人</option>
         <option value="2">2人</option>
@@ -75,9 +59,10 @@ if (empty($r)) {
         <option value="5">5人</option>
         <option value="6">6人</option>
     </select>
-    </div>
             </div>
-            <button type="submit" class="btn btn-primary">修改</button>
+           
+
+            <button type="submit" class="btn btn-primary">Submit</button>
           </form>
         </div>
       </div>
@@ -95,7 +80,7 @@ if (empty($r)) {
       </div>
       <div class="modal-body">
         <div class="alert alert-success" role="alert">
-          編輯成功
+          新增成功
         </div>
       </div>
       <div class="modal-footer">
@@ -144,7 +129,7 @@ if (empty($r)) {
       // FormData 的個體看成沒有外觀的表單
       const fd = new FormData(document.form1);
 
-      fetch('edit-api.php', {
+      fetch('add_reserve_api.php', {
           method: 'POST',
           body: fd, // enctype: multipart/form-data
         }).then(r => r.json())
@@ -153,13 +138,15 @@ if (empty($r)) {
           if (result.success) {
             modalBody.innerHTML = `
             <div class="alert alert-success" role="alert">
-              編輯成功
+              新增成功
             </div>`;
+            // alert('新增成功')
           } else {
             modalBody.innerHTML = `
             <div class="alert alert-danger" role="alert">
-              沒有編輯
+              沒有新增
             </div>`;
+            // alert('沒有新增')
           }
           modal.show();
         })
