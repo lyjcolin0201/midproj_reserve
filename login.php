@@ -256,7 +256,7 @@ require __DIR__ . '/db-connect.php';
       // FormData 的個體看成沒有外觀的表單
       const fd = new FormData(document.form1);
 
-      fetch('login-api.php', {
+      fetch('login_reserve_api.php', {
           method: 'POST',
           body: fd, // enctype: multipart/form-data
         }).then(r => r.json())
